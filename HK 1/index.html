@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HK 1</title>
+    <style>
+        body{
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body > div {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            margin: 1rem;
+            border: 1px solid #cecece;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <strong>Exercício 1</strong>
+        <label for="first-number">Insira o primeiro número: </label>
+        <input type="number" step="any" id="first-number"/>
+
+        <label for="second-number">Insira o segundo número: </label>
+        <input type="number" step="any" id="second-number"/>
+
+        <input type="submit" value="Calcular" onclick="doOperations(document.getElementById('first-number'),
+         document.getElementById('second-number'))"/>
+    </div>
+
+    <div>
+        <strong>Exercício 2</strong>
+        <label for="index">Insira o indíce (entre 0 e 3): </label>
+        <input type="number" step="any" id="index"/>
+
+        <input type="submit" value="Buscar" onclick="getItemByIndex(document.getElementById('index').value)"/>
+    </div>
+
+    <div>
+        <strong>Exercício 3</strong>
+        <label for="array">Insira o array: </label>
+        <input type="input" id="array"/>
+
+        <input type="submit" value="Percorrer" onclick="iterateArray(document.getElementById('array').value)"/>
+    </div>
+
+    <div>
+        <strong>Exercício 4</strong>
+
+        <label for="array-to-modify">Insira o array: </label>
+        <input type="input" id="array-to-modify"/>
+
+        <input type="submit" value="Modificar" onclick="modifyArray(document.getElementById('array-to-modify').value)"/>
+    </div>
+
+    <div>
+        <strong>Exercício 5</strong>
+        
+        <label for="cep">Insira o Cep: </label>
+        <input type="input" id="cep"/>
+
+        <input type="submit" value="Modificar" onclick="buscarCep(document.getElementById('cep').value)"/>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function doOperations(firstNumber, secondNumber){
+
+            if((isNaN(+firstNumber.value / 0) || isNaN(+secondNumber.value / 0))
+            && (firstNumber.value !== "0" && secondNumber.value !== "0")){
+                console.log('Valores inválidos')
+            }else{
+                let response = {
+                    "soma": +firstNumber.value + +secondNumber.value,
+                    "subtração": +firstNumber.value - +secondNumber.value,
+                    "multiplicação": +firstNumber.value * +secondNumber.value,
+                    "divisão": +firstNumber.value / +secondNumber.value
+                }
+
+                console.log(response)
+            }
+        }
+
+        function getItemByIndex(index){
+            const object = {
+                "funcionarios": [
+                    "Alan", 
+                    "João",
+                    "Vinícius",
+                    "Rodrigo"
+                ]
+            }
+
+            if(+index >= 0 && +index <= 3 &&
+            (!isNaN(+index / 0) || index === "0" )){
+                console.log(object.funcionarios[+index])
+            }else{
+                console.log('Valor inválido')
+            }
+        }
+
+        function iterateArray(value){
+            try{
+                const array = JSON.parse(value);
+                for(const item of array){
+                    console.log(item);
+                }
+            }catch(e){
+                console.log('Parâmetro inválido')
+            }
+        }
+
+        function modifyArray(value){
+            try{
+                const array = JSON.parse(value);
+                let newArray = [];
+                for(const [index, item] of array.entries()){
+                    newArray.push(`${item} - ${index}`);
+                }
+                console.log(newArray);
+            }catch(e){
+                console.log('Parâmetro inválido')
+            }
+        }
+
+        async function buscarCep(cep){
+            try{
+                let result = await axios.get(`http://viacep.com.br/ws/${cep}/json/`);
+                if(!result.data.erro){
+                    console.log(result.data)
+                }else{
+                    console.log('CEP não encontrado.')
+                }
+            }catch(e){
+                console.log('CEP inválido.')
+            }
+        }
+    </script>
+</body>
+</html>
