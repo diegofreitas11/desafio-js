@@ -25,9 +25,9 @@ export function CarList(props){
                 </div>
 
             </div>
-            {props.list.length === 0 && <span>Nenhum carro estacionado.</span>}
+            {props.list && props.list.length === 0 && <span>Nenhum carro estacionado.</span>}
             {props.list && props.list.map(item => (
-                <div>
+                <div key = {item.key}>
                     <div>
                         <span>{item.model}</span>
                     </div>
@@ -50,11 +50,11 @@ export function CarList(props){
                                 props.editItem(item)
                             }}
                         >
-                            <img src = "edit.svg"/>
+                            <img src = "edit.svg" alt = "..."/>
                         </button>
 
                         <button onClick = {() => props.deleteItem(item.key)}>
-                            <img src = "delete.svg"/>
+                            <img src = "delete.svg" alt = "..."/>
                         </button>
                     </div>
                     

@@ -10,13 +10,22 @@ export function Form(props){
     const [avaliableParkingSpaces, setAvaliableParkingSpaces] = useState(null);
     const [error, setError] = useState(null);
 
+    let nextKey = Math.floor(Math.random() * 100000000);
+
     useEffect(() => {
         let newAvaliableParkingSpaces = [1,2,3,4,5];
         
+        let arrayOfKeys = [];
+
         for(let [key, value] of Object.entries(localStorage)){
             let parkingSpaceValue = JSON.parse(value).parkingSpace;
             let index = newAvaliableParkingSpaces.indexOf(+parkingSpaceValue);
             if(parkingSpaceValue !== parkingSpace) newAvaliableParkingSpaces.splice(index, 1);
+            arrayOfKeys.push(key);
+        }
+
+        while(arrayOfKeys.includes(String(nextKey))){
+            nextKey = Math.floor(Math.random() * 100000000);
         }
 
         if(!props.itemToEdit) setParkingSpace(newAvaliableParkingSpaces[0]);
@@ -94,7 +103,9 @@ export function Form(props){
             </div>
 
             <Button 
-                onClick = {() => saveCarEntry(!!props.itemToEdit ? props.itemToEdit.key : localStorage.length)} 
+                onClick = {() => saveCarEntry(
+                    !!props.itemToEdit ? props.itemToEdit.key : nextKey
+                )} 
                 isAnUpdate = {!!props.itemToEdit}
             />
 

@@ -21,10 +21,13 @@ function App() {
 
   const loadList = () => {
       let fetchedList = [];
+
+      
       for(let [key, value] of Object.entries(localStorage)){
           fetchedList.push({...JSON.parse(value), key});
       }
       setList(fetchedList);
+
   }
 
   const openForm = () => {
